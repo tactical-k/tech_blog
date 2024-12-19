@@ -9,7 +9,7 @@ topics: [
   "Inertia",
   "firebase",
 ]
-published: false
+published: true
 ---
 # きっかけ
 2024年12月に自分の結婚式をしました 💍
