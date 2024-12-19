@@ -75,13 +75,10 @@ public function __construct()
     $this->database = $firebase->withDatabaseUri(env('VITE_FIREBASE_DATABASE_URL'))->createDatabase();
 }
 
-public function syncQuestion($question)
+public function syncQuestion($question): void
 {
   $this->database->getReference("{$question->event_id}/currentDisplay")->set([
-      'type' => 'question',
-      'question_id' => $question->id,
-      'text' => $question->text,
-      'choices' => $question->choices->pluck('text'),
+      // firebaseに保存するデータを記載
   ]);
   return ['status' => 'success'];
 }
@@ -90,7 +87,7 @@ public function syncQuestion($question)
 ### Vue.js側実装イメージ
 ```js
 <script setup>
-import { ref as dbRef, onValue, push } from 'firebase/database';
+import { ref as dbRef, onValue } from 'firebase/database';
 
 {/* 略 */}
 
@@ -102,8 +99,6 @@ onMounted(() => {
         const data = snapshot.val();
         if (data) {
             question.value = data;
-            // Firebaseイベント発火時にanswerをリセット
-            answer.value = '';
         }
     });
 });
